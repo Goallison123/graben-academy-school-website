@@ -33,5 +33,5 @@ Ensure you have **Node.js** (v18 or higher recommended) and a package manager li
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/your-username/graben-highlight-academy.git](https://github.com/your-username/graben-highlight-academy.git)
+   git clone (https://github.com/Goallison123/graben-academy-school-website)
    cd graben-highlight-academy
