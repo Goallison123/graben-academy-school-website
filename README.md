@@ -1,20 +1,37 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# Graben Highlight Academy Website
 
-# Run and deploy your AI Studio app
+A modern, responsive, multi-page web application built for **Graben Highlight Academy**, a nursery school in Rubavu District dedicated to play-based early childhood education.
 
-This contains everything you need to run your app locally.
+---
 
-View your app in AI Studio: https://ai.studio/apps/5e598435-8e7f-47cd-8899-2ef10fddbe56
+## 🛠️ Tech Stack
 
-## Run Locally
+* **Framework:** [React 18](https://react.dev/)
+* **Build Tool:** [Vite](https://vitejs.dev/)
+* **Styling:** [Tailwind CSS v4](https://tailwindcss.com/) via `@tailwindcss/vite`
+* **Icons:** [Lucide React](https://lucide.dev/)
+* **Language:** TypeScript
 
-**Prerequisites:**  Node.js
+---
 
+## 🚀 Features
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+* **Interactive Navigation & Bento Grid:** Browse nursery classes, play programs, facilities, and milestone achievements easily.
+* **Dynamic Page Routing:** Seamless section navigation (`Home`, `About`, `Academics`, `Outdoor Play & Sports`, `Campus`, `Milestones`, `Gallery`, `News`, and `Enrollment`).
+* **Custom Asset Handler:** Integrated Vite plugin to dynamically serve and bundle local assets seamlessly between dev and production builds.
+* **Fully Responsive:** Designed for all device sizes, from mobile phones to high-resolution desktops.
+
+---
+
+## 💻 Getting Started
+
+### Prerequisites
+
+Ensure you have **Node.js** (v18 or higher recommended) and a package manager like `npm` or `pnpm` installed.
+
+### Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/your-username/graben-highlight-academy.git](https://github.com/your-username/graben-highlight-academy.git)
+   cd graben-highlight-academy
