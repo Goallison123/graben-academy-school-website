@@ -1,0 +1,6 @@
+{
+  "name": "Graben Highlight Academy",
+  "description": "Official portal for Graben Highlight Academy, a nurturing nursery school in Rubavu District providing quality early childhood education, play-based learning, creative development, and holistic care.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
