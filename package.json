@@ -1,22 +1,8 @@
 {
-  "name": "graben-highlight-academy",
+  "name": "react-example",
   "private": true,
-  "version": "1.0.0",
+  "version": "0.0.0",
   "type": "module",
-  "author": "Graben Highlight Academy",
-  "contributors": [
-    {
-      "name": "Graben Highlight Academy",
-      "role": "Project Owner"
-    }
-  ],
-  "serviceProvider": {
-    "name": "Sybella Systems",
-    "lead": "Bessora Neema Hirwa",
-    "role": "Development & Technical Implementation"
-  },
-  "license": "Proprietary",
-  "copyright": "© 2026 Graben Highlight Academy. All rights reserved.",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
     "build": "vite build",

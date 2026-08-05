@@ -5,16 +5,16 @@ export const SCHOOLS_DATA: SchoolConfig[] = [
     id: "graben-highlight-academy",
     name: "Graben Highlight Academy",
     frenchName: "Académie Graben Highlight",
-    slogan: "Growing Bright Minds • Learning Through Joy & Discovery",
-    established: "2023",
+    slogan: "Nurturing Young Minds • Learning Through Play & Discovery",
+    established: "2018",
     location: "Rubavu District, Western Province, Rwanda",
     district: "Rubavu",
-    type: "Early Childhood & Nursery School",
-    gender: "Co‑educational (Toddlers & Nursery Pupils))",
-    logoUrl: "src/assets/images/graben-logo.JPG",
-    primaryColor: "#ffc72c", // Warm yellow / Gold
-    secondaryColor: "#1b4d3e", // Dark forest green
-    accentColor: "#1a1a1a", // Sky Blue Accent
+    type: "Nurturing Early Childhood & Nursery School",
+    gender: "Co-educational (Toddlers & Nursery Pupils)",
+    logoUrl: "/assets/graben_logo.svg",
+    primaryColor: "#ea580c", // Cheerful Warm Orange
+    secondaryColor: "#f59e0b", // Sunshine Yellow/Amber
+    accentColor: "#0284c7", // Sky Blue Accent
     contact: {
       email: "admissions@grabenhighlight.edu.rw",
       phone: "+250 788 123 456",
@@ -26,30 +26,30 @@ export const SCHOOLS_DATA: SchoolConfig[] = [
     },
     heroSlides: [
       {
-        image: "src/assets/images/hero-celebrating-early-achievements.jpg",
-        title: "Celebrating Early Achievements",
-        description: "Our nursery graduates shine with confidence and pride as they mark their first academic milestone.",
-        tag: "Nursery Graduation Day"
+        image: "/assets/graben_hero.jpg",
+        title: "Nurturing Early Childhood Education in Rubavu District",
+        description: "Creating a safe, engaging, and supportive environment where children learn through play, creativity, and exploration.",
+        tag: "Nursery & Play-Based Learning"
       },
       {
-        image: "/src/assets/images/hero-learning-beyong-class.jpg",
-        title: "Learning Beyond the Classroom",
-        description: "Children explore art, nature, and friendship through guided outdoor play and creative discovery.",
-        tag: "Outdoor Exploration"
+        image: "/assets/graben_sports.jpg",
+        title: "Active Outdoor Play & Physical Development",
+        description: "Developing gross motor skills, teamwork, and health habits through supervised playground activities and mini sports games.",
+        tag: "Outdoor Play & Sports"
       },
       {
-        image: "src/assets/images/hero-celebrating-culture.jpg",
-        title: "Celebrating Culture Through Movement",
-        description: "Our pupils express creativity and rhythm through cultural dance and joyful performance.",
+        image: "/assets/graben_art.jpg",
+        title: "Holistic Social, Emotional & Cognitive Growth",
+        description: "Helping every child build a strong foundation for future learning and success with loving, trained caregivers.",
         tag: "Holistic Child Development"
       }
     ],
     welcome: {
       title: "Welcome to Graben Highlight Academy",
-      message: "At Graben Highlight Academy, we nurture curiosity and confidence in every child. From playful learning to cultural celebration, our classrooms and playgrounds are filled with laughter, creativity, and discovery. We believe education begins with joy — and every milestone, from first words to graduation, deserves celebration.",
-      authorName: "Sadiki RWEMA",
-      authorRole: "School Manager and Director",
-      authorImage: "src/assets/images/welcome-school-headmaster.jpg"
+      message: "Graben Highlight Academy is a nurturing nursery school in Rubavu District, dedicated to providing quality early childhood education. We create a safe, engaging, and supportive environment where children learn through play, creativity, and exploration. Our trained caregivers focus on holistic development—social, emotional, and cognitive—helping every child build a strong foundation for future learning and success.",
+      authorName: "Marie-Claire Mukamana",
+      authorRole: "Directress & Early Childhood Lead",
+      authorImage: "/assets/graben_art.jpg"
     },
     stats: [
       { label: "Enrolled Toddlers", value: "180+", icon: "Smile" },
@@ -81,71 +81,93 @@ export const SCHOOLS_DATA: SchoolConfig[] = [
         code: "Arts & Play",
         description: "Finger painting, rhythm band instruments, puppet storytelling, dramatic play, and imaginative art projects.",
         icon: "Palette"
-      },
-      {
-        title: "Cultural Dance & Expression  ",
-        code: "Culture",
-        description: "Children learn rhythm, coordination, and teamwork through traditional dance and creative movement activities.",
-        icon: "Palette"
       }
-
     ],
     sportsAcademy: {
-  title: "Graben Highlight Outdoor Play & Physical Development",
-  description: "At Graben Highlight Academy, outdoor play is full of laughter and discovery. Our children enjoy free movement and teamwork through simple games like running, hide and seek, and playful group challenges. These activities help them build balance, coordination, and confidence while having fun in a safe, green environment.",
-  image: "src/assets/images/sports-outdoor-fun-group.jpg",
-  features: [
-    "Supervised outdoor play on soft, secure green lawns in Rubavu District",
-    "Playful group games like running, hide and seek, and tag",
-    "Encouraging teamwork, laughter, and social bonding among children",
-    "Gross motor skill development through natural movement and exploration",
-    "Trained early childhood caregivers ensuring 100% child safety and hygiene"
-  ]
-},
+      title: "Graben Highlight Outdoor Play & Physical Development",
+      description: "Physical activity and active outdoor games are essential for early childhood health. At Graben Highlight Academy, our spacious green playground features soft play equipment, balance beams, mini basketball hoops, and group ball games where toddlers run, jump, build balance, and develop motor coordination safely under loving supervision.",
+      image: "/assets/graben_sports.jpg",
+      features: [
+        "Supervised outdoor play on soft, secure green lawns in Rubavu District",
+        "Mini basketball hoops, soft football kicks, and obstacle balance fun",
+        "Gross motor skill development and rhythmic physical movement exercises",
+        "Trained early childhood caregivers ensuring 100% child safety and hygiene"
+      ]
+    },
     galleryItems: [
       {
-        src: "src/assets/images/gallery-graduation-ceremony.jpg",
-        title: "Graduation ceremony highlights",
-        category: "School Events",
-        description: "Our proud graduates march with joy and unity."
+        src: "/assets/graben_hero.jpg",
+        title: "Interactive Play & Building Blocks Activity",
+        category: "Learning Through Play",
+        description: "Children building spatial and cognitive skills with colorful blocks."
       },
       {
-        src: "src/assets/images/gallery-outdoor-play.jpg",
-        title: "Outdoor sculpture play",
-        category: "Outdoor learning",
-        description: "Exploring art and nature through play."
+        src: "/assets/graben_sports.jpg",
+        title: "Outdoor Lawn Play & Motor Skills Exercises",
+        category: "Outdoor Activities",
+        description: "Active toddlers enjoying outdoor games under gentle caregiver supervision."
       },
       {
-        src: "src/assets/images/gallery-class-group.jpg",
-        title: "Class group",
-        category: "Community",
-        description: "Our learners and caregivers together — a family of growth"
+        src: "/assets/graben_art.jpg",
+        title: "Creative Finger Painting & Art Atelier",
+        category: "Creative Expression",
+        description: "Nursery pupils expressing imagination through painting and storytelling."
       },
       {
-        src: "src/assets/images/gallery-child-certificate.jpg",
-        title: "Graduation certification",
-        category: "Achievement",
-        description: "Celebrating milestones with pride and friendship."
+        src: "/assets/graben_classroom.jpg",
+        title: "Sunlit Nursery Classroom & Reading Corner",
+        category: "Learning Environment",
+        description: "Our cheerful, child-friendly classroom filled with storybooks and educational games."
       }
     ],
     news: [
       {
         id: "news-1",
-        title: "Graben Highlight Academy Celebrates Nursery Graduation 2026",
-        date: "June 22, 2026",
-        category: "School event",
-        summary: "Families gathered to celebrate the achievements of our nursery graduates in Rubavu District.",
-        author: "SYBELLA SYSTEMS CUSTOMER SUPPORT TEAM",
-        readTime: "1 min read",
-        image: "src/assets/images/news-graduation.jpg",
+        title: "Graben Highlight Academy Welcomes New Nursery Cohort in Rubavu District",
+        date: "July 18, 2026",
+        category: "Nursery Announcement",
+        summary: "Parents and toddlers gathered for Orientation Day as Graben Highlight Academy opened registration for Baby Class, Middle Class, and Top Class.",
+        author: "Directress Marie-Claire Mukamana",
+        readTime: "2 min read",
+        image: "/assets/graben_hero.jpg",
         content: [
           "Graben Highlight Academy warmly welcomed new families to its vibrant nursery campus in Rubavu District for the upcoming school session.",
-          "During the orientation, Director RWEMA SADIKI reaffirmed the academy's core mission: creating a safe, engaging, and supportive environment where children learn through play, creativity, and exploration.",
+          "During the orientation, Directress Marie-Claire Mukamana reaffirmed the academy's core mission: creating a safe, engaging, and supportive environment where children learn through play, creativity, and exploration.",
           "Parents toured the sunlit classrooms, outdoor play lawn, and creative arts atelier, meeting trained caregivers dedicated to holistic social, emotional, and cognitive development.",
           "Enrollment remains open for Baby Class, Middle Class, and Top Class streams."
         ]
       },
-      
+      {
+        id: "news-2",
+        title: "The Importance of Play-Based Early Literacy & Cognitive Growth",
+        date: "June 25, 2026",
+        category: "Parent Guidance",
+        summary: "Our early childhood experts share key insights on how play-based learning strengthens brain development, language acquisition, and social confidence.",
+        author: "Early Childhood Care Team",
+        readTime: "3 min read",
+        image: "/assets/graben_art.jpg",
+        content: [
+          "Research shows that young children learn best when education is joyful, interactive, and play-based.",
+          "At Graben Highlight Academy, storytelling sessions, finger painting, and rhyming songs spark curiosity while laying the groundwork for reading comprehension and arithmetic.",
+          "Caregivers encourage emotional intelligence by teaching toddlers empathy, sharing, and self-expression in a calm, nurturing setting.",
+          "Parents are encouraged to reinforce creative play at home with daily story reading and interactive conversation."
+        ]
+      },
+      {
+        id: "news-3",
+        title: "Upgraded Outdoor Playground & Safety Equipment",
+        date: "May 10, 2026",
+        category: "Campus Upgrades",
+        summary: "Graben Highlight Academy has expanded its outdoor play area with soft turf, mini basketball courts, and balance play structures for healthy motor development.",
+        author: "Child Welfare & Safety Desk",
+        readTime: "2 min read",
+        image: "/assets/graben_sports.jpg",
+        content: [
+          "Physical play is a cornerstone of child growth. Graben Highlight Academy recently installed new child-safe play equipment and soft turf on its outdoor grounds.",
+          "The new facilities feature mini basketball hoops, climbing balance tracks, and soft play balls tailored for toddler hand-eye coordination.",
+          "With trained caregivers present at all times, every child enjoys active outdoor fun with complete safety and peace of mind for parents."
+        ]
+      }
     ]
   }
 ];

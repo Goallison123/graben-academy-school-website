@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Outer Warm Ring -->
+  <circle cx="100" cy="100" r="96" fill="#5c2a18" stroke="#ea580c" stroke-width="6"/>
+  <circle cx="100" cy="100" r="78" fill="#ffffff" stroke="#5c2a18" stroke-width="2"/>
+  
+  <!-- Curved Text Top -->
+  <path id="textPathTop" d="M 22,100 A 78,78 0 1,1 178,100" fill="none"/>
+  <text fill="#ffffff" font-family="sans-serif" font-size="9.5" font-weight="900" letter-spacing="1">
+    <textPath href="#textPathTop" startOffset="50%" text-anchor="middle">GRABEN HIGHLIGHT ACADEMY</textPath>
+  </text>
+  
+  <g transform="translate(100,102)">
+    <!-- Sun Rays / Highlight representing Early Childhood Brightness -->
+    <path d="M0,-48 L0,-38 M-18,-42 L-11,-35 M18,-42 L11,-35 M-28,-28 L-20,-24 M28,-28 L20,-24" stroke="#ea580c" stroke-width="3" stroke-linecap="round"/>
+    <!-- Rising Sun / Spark -->
+    <circle cx="0" cy="-22" r="12" fill="#f59e0b"/>
+    
+    <!-- Open Storybook & Play Blocks -->
+    <path d="M-30,5 C-15,-2 -5,3 0,8 C5,3 15,-2 30,5 L28,22 C15,15 5,18 0,22 C-5,18 -15,15 -28,22 Z" fill="#5c2a18"/>
+    
+    <!-- Child Handprint or Little Heart -->
+    <path d="M-6,2 C-6,-2 -2,-4 0,-1 C2,-4 6,-2 6,2 C6,6 0,11 0,11 C0,11 -6,6 -6,2 Z" fill="#ea580c"/>
+    
+    <!-- Banner -->
+    <rect x="-44" y="26" width="88" height="18" rx="9" fill="#ea580c"/>
+    <text x="0" y="38" fill="#ffffff" font-family="sans-serif" font-size="8.5" font-weight="900" text-anchor="middle">RUBAVU • NURSERY</text>
+  </g>
+</svg>

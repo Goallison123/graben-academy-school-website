@@ -7,28 +7,53 @@ interface NavbarProps {
   config: SchoolConfig;
   onNavigate: (sectionId: string) => void;
   activeSection: string;
+  onOpenGame?: () => void;
 }
 
-export default function Navbar({ config, onNavigate, activeSection }: NavbarProps) {
+export default function Navbar({ config, onNavigate, activeSection, onOpenGame }: NavbarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
-  const menuItems = [
-    { id: "home", label: "Home" },
-    { id: "about", label: "About Us" },
-    { id: "academics", label: "Nursery Programs" },
-    { id: "sports-academy", label: "Play & Outdoor Sports" },
-    { id: "campus", label: "Campus & Care" },
-    { id: "outcomes", label: "Child Milestones" },
-    { id: "gallery", label: "Gallery" },
-    { id: "news", label: "News" },
-    { id: "contact", label: "Enrollment & Fees" }
+  const navGroups = [
+    {
+      id: "home",
+      label: "Home",
+      directId: "home"
+    },
+    {
+      id: "about-group",
+      label: "About & Classes",
+      items: [
+        { id: "about", label: "About Academy", icon: "Heart" },
+        { id: "academics", label: "Nursery Programs (Baby/Middle/Top)", icon: "Sparkles" },
+        { id: "outcomes", label: "Child Milestones & Growth", icon: "Smile" }
+      ]
+    },
+    {
+      id: "play-group",
+      label: "Play & Facilities",
+      items: [
+        { id: "sports-academy", label: "Outdoor Play & Mini Sports", icon: "Trophy" },
+        { id: "campus", label: "Campus & Care Facilities", icon: "Home" },
+        { id: "gallery", label: "Picture Gallery", icon: "Image" }
+      ]
+    },
+    {
+      id: "news-group",
+      label: "News & Admissions",
+      items: [
+        { id: "news", label: "Nursery Bulletins & News", icon: "Newspaper" },
+        { id: "contact", label: "Enrollment & Care Fees", icon: "ClipboardList" }
+      ]
+    }
   ];
 
   const handleMenuClick = (sectionId: string) => {
     onNavigate(sectionId);
     setIsMobileMenuOpen(false);
+    setOpenDropdown(null);
   };
 
   return (
@@ -36,7 +61,7 @@ export default function Navbar({ config, onNavigate, activeSection }: NavbarProp
       className="sticky top-0 z-40 bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100 transition-all duration-300"
       id="school-navbar"
     >
-      <div className="max-w-[1600px] mx-auto px-2 sm:px-4 lg:px-5">
+      <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-5">
         <div className="flex justify-between items-center h-16 sm:h-18 gap-2 flex-nowrap">
           
           {/* School Brand Identity (Logo + Name) */}
@@ -78,65 +103,105 @@ export default function Navbar({ config, onNavigate, activeSection }: NavbarProp
             </div>
           </div>
 
-          {/* Desktop Navigation Links - Single line flex */}
-          <nav className="hidden lg:flex items-center space-x-0.5 xl:space-x-2 shrink min-w-0 flex-nowrap">
-            {menuItems.map((item) => {
-              const isActive = activeSection === item.id;
+          {/* Desktop Grouped Navigation Links */}
+          <nav className="hidden lg:flex items-center space-x-1 xl:space-x-3 shrink min-w-0 flex-nowrap">
+            {navGroups.map((group) => {
+              if (group.directId) {
+                const isActive = activeSection === group.directId;
+                return (
+                  <button
+                    key={group.id}
+                    onClick={() => onNavigate(group.directId!)}
+                    className={`text-xs xl:text-sm font-black tracking-tight transition-all duration-200 relative px-3 py-2 whitespace-nowrap cursor-pointer rounded-xl hover:bg-amber-50 ${
+                      isActive ? "text-[#ea580c]" : "text-gray-700 hover:text-gray-900"
+                    }`}
+                  >
+                    {group.label}
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeNavIndicator"
+                        className="absolute bottom-0 left-2 right-2 h-0.5 rounded-full bg-[#ea580c]"
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      />
+                    )}
+                  </button>
+                );
+              }
+
+              const isGroupActive = group.items?.some((item) => item.id === activeSection);
+
               return (
-                <button
-                  key={item.id}
-                  onClick={() => onNavigate(item.id)}
-                  className={`text-xs xl:text-sm font-semibold tracking-tight transition-all duration-200 relative px-1.5 xl:px-2.5 py-1.5 whitespace-nowrap cursor-pointer rounded-lg hover:bg-gray-50/80 ${
-                    isActive ? "text-gray-950 font-extrabold" : "text-gray-600 hover:text-gray-900"
-                  }`}
+                <div
+                  key={group.id}
+                  className="relative"
+                  onMouseEnter={() => setOpenDropdown(group.id)}
+                  onMouseLeave={() => setOpenDropdown(null)}
                 >
-                  {item.label}
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeNavIndicator"
-                      className="absolute bottom-0 left-1 right-1 h-0.5 rounded-full"
-                      style={{ backgroundColor: config.primaryColor }}
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                    />
-                  )}
-                </button>
+                  <button
+                    onClick={() => setOpenDropdown(openDropdown === group.id ? null : group.id)}
+                    className={`text-xs xl:text-sm font-black tracking-tight transition-all duration-200 px-3 py-2 whitespace-nowrap cursor-pointer rounded-xl hover:bg-amber-50 flex items-center space-x-1 ${
+                      isGroupActive ? "text-[#ea580c]" : "text-gray-700 hover:text-gray-900"
+                    }`}
+                  >
+                    <span>{group.label}</span>
+                    <LucideIcon name="ChevronDown" size={14} className={`transition-transform duration-200 ${openDropdown === group.id ? "rotate-180" : ""}`} />
+                  </button>
+
+                  <AnimatePresence>
+                    {openDropdown === group.id && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute top-full left-0 mt-1 w-64 bg-white rounded-2xl shadow-xl border border-amber-200/80 p-2 z-50 space-y-1"
+                      >
+                        {group.items?.map((item) => {
+                          const isItemActive = activeSection === item.id;
+                          return (
+                            <button
+                              key={item.id}
+                              onClick={() => handleMenuClick(item.id)}
+                              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center space-x-2.5 ${
+                                isItemActive
+                                  ? "bg-amber-100/70 text-[#ea580c]"
+                                  : "text-gray-700 hover:bg-amber-50 hover:text-gray-900"
+                              }`}
+                            >
+                              <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${isItemActive ? "bg-[#ea580c] text-white" : "bg-amber-100 text-amber-800"}`}>
+                                <LucideIcon name={item.icon} size={14} />
+                              </div>
+                              <span className="truncate">{item.label}</span>
+                            </button>
+                          );
+                        })}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               );
             })}
           </nav>
 
-          {/* Right Header Toolbar (Search + CTA Button + Mobile Trigger) */}
+          {/* Right Header Toolbar (Search + Play Peítho Game + CTA Button + Mobile Trigger) */}
           <div className="flex items-center space-x-2 shrink-0">
             
-            {/* Interactive Search toggle */}
-            <div className="relative flex items-center">
-              <AnimatePresence>
-                {isSearchOpen && (
-                  <motion.input
-                    initial={{ width: 0, opacity: 0 }}
-                    animate={{ width: 140, opacity: 1 }}
-                    exit={{ width: 0, opacity: 0 }}
-                    type="text"
-                    placeholder="Search..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="border border-gray-200 text-xs px-2.5 py-1.5 rounded-lg focus:outline-none focus:ring-1 focus:border-transparent mr-1.5 bg-gray-50 text-gray-800"
-                    style={{ ["--tw-ring-color" as any]: config.primaryColor }}
-                  />
-                )}
-              </AnimatePresence>
+            {/* Play Peítho Game Button */}
+            {onOpenGame && (
               <button
-                onClick={() => setIsSearchOpen(!isSearchOpen)}
-                className="text-gray-500 hover:text-gray-800 p-1.5 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer shrink-0"
-                aria-label="Search website"
+                onClick={onOpenGame}
+                className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all active:scale-95 cursor-pointer shrink-0 animate-pulse"
               >
-                <LucideIcon name={isSearchOpen ? "X" : "Search"} size={16} />
+                <LucideIcon name="Gamepad2" size={16} className="text-slate-950" />
+                <span className="hidden sm:inline">Play Peítho</span>
+                <span className="sm:hidden">Game</span>
               </button>
-            </div>
+            )}
 
             {/* Quick CTA - Enrollment Button */}
             <button
               onClick={() => onNavigate("contact")}
-              className="hidden sm:inline-flex items-center text-xs font-bold px-3 py-2 rounded-xl text-white shadow-sm hover:shadow-md transition-all active:scale-95 cursor-pointer whitespace-nowrap shrink-0"
+              className="hidden xl:inline-flex items-center text-xs font-bold px-3 py-2 rounded-xl text-white shadow-sm hover:shadow-md transition-all active:scale-95 cursor-pointer whitespace-nowrap shrink-0"
               style={{ backgroundColor: config.primaryColor }}
             >
               <span>Enroll Now</span>
@@ -155,7 +220,7 @@ export default function Navbar({ config, onNavigate, activeSection }: NavbarProp
         </div>
       </div>
 
-      {/* Mobile Drawer Navigation (using framer motion) */}
+      {/* Mobile Drawer Navigation */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -165,24 +230,61 @@ export default function Navbar({ config, onNavigate, activeSection }: NavbarProp
             transition={{ duration: 0.25 }}
             className="lg:hidden bg-white border-t border-gray-100 overflow-hidden"
           >
-            <div className="px-4 py-3.5 space-y-2">
-              {menuItems.map((item) => {
-                const isActive = activeSection === item.id;
+            <div className="px-4 py-3.5 space-y-3">
+              {onOpenGame && (
+                <button
+                  onClick={() => {
+                    onOpenGame();
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="w-full text-center py-3 rounded-2xl bg-gradient-to-r from-amber-400 via-orange-500 to-amber-400 text-slate-950 font-black text-sm shadow-md flex items-center justify-center space-x-2 cursor-pointer"
+                >
+                  <LucideIcon name="Gamepad2" size={18} />
+                  <span>Play Peítho Connection Canvas Game</span>
+                </button>
+              )}
+
+              {navGroups.map((group) => {
+                if (group.directId) {
+                  const isActive = activeSection === group.directId;
+                  return (
+                    <button
+                      key={group.id}
+                      onClick={() => handleMenuClick(group.directId!)}
+                      className={`w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-black transition-colors flex items-center justify-between cursor-pointer ${
+                        isActive ? "bg-orange-100/70 text-[#ea580c]" : "text-gray-700"
+                      }`}
+                    >
+                      <span>{group.label}</span>
+                      {isActive && <LucideIcon name="ChevronRight" size={14} className="text-[#ea580c]" />}
+                    </button>
+                  );
+                }
+
                 return (
-                  <button
-                    key={item.id}
-                    onClick={() => handleMenuClick(item.id)}
-                    className="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium transition-colors flex items-center justify-between cursor-pointer"
-                    style={{
-                      backgroundColor: isActive ? `${config.primaryColor}10` : "transparent",
-                      color: isActive ? config.primaryColor : "#4b5563"
-                    }}
-                  >
-                    <span>{item.label}</span>
-                    {isActive && <LucideIcon name="ChevronRight" size={14} style={{ color: config.primaryColor }} />}
-                  </button>
+                  <div key={group.id} className="space-y-1 pl-1 border-l-2 border-amber-200">
+                    <div className="text-[11px] font-black uppercase text-amber-700 px-3 pt-1">
+                      {group.label}
+                    </div>
+                    {group.items?.map((item) => {
+                      const isActive = activeSection === item.id;
+                      return (
+                        <button
+                          key={item.id}
+                          onClick={() => handleMenuClick(item.id)}
+                          className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold transition-colors flex items-center space-x-2 cursor-pointer ${
+                            isActive ? "bg-amber-100 text-[#ea580c]" : "text-gray-600"
+                          }`}
+                        >
+                          <LucideIcon name={item.icon} size={14} />
+                          <span>{item.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
                 );
               })}
+
               <div className="pt-2 border-t border-gray-100">
                 <button
                   onClick={() => handleMenuClick("contact")}

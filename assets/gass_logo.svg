@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <circle cx="100" cy="100" r="96" fill="#1e3a8a" stroke="#059669" stroke-width="6"/>
+  <circle cx="100" cy="100" r="78" fill="#ffffff" stroke="#1e3a8a" stroke-width="2"/>
+  <path id="textPathTop" d="M 22,100 A 78,78 0 1,1 178,100" fill="none"/>
+  <text fill="#ffffff" font-family="sans-serif" font-size="10" font-weight="bold" letter-spacing="1.2">
+    <textPath href="#textPathTop" startOffset="50%" text-anchor="middle">GISENYI ADVENTIST SECONDARY SCHOOL</textPath>
+  </text>
+  <g transform="translate(100,105)">
+    <!-- Open Book -->
+    <path d="M-32,12 C-16,5 -5,10 0,16 C5,10 16,5 32,12 L30,22 C16,15 5,18 0,23 C-5,18 -16,15 -30,22 Z" fill="#1e3a8a"/>
+    <!-- Cross / Flame emblem -->
+    <rect x="-4" y="-38" width="8" height="46" rx="2" fill="#059669"/>
+    <rect x="-18" y="-28" width="36" height="8" rx="2" fill="#059669"/>
+    <!-- Torch Flame -->
+    <path d="M0,-42 C12,-30 18,-15 10,0 C16,-10 12,-22 0,-32 C-12,-22 -16,-10 -10,0 C-18,-15 -12,-30 0,-42 Z" fill="#d97706"/>
+    <!-- GASS Banner -->
+    <rect x="-38" y="26" width="76" height="18" rx="9" fill="#1e3a8a"/>
+    <text x="0" y="39" fill="#ffffff" font-family="sans-serif" font-size="10" font-weight="900" text-anchor="middle">GASS 1978</text>
+  </g>
+</svg>

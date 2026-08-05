@@ -19,8 +19,7 @@ export default function Welcome({ config }: WelcomeProps) {
                 src={config.welcome.authorImage}
                 alt={config.welcome.authorName}
                 referrerPolicy="no-referrer"
-                className="w-full h-[320px] sm:h-[380px] object-cover object-[center_20%] rounded-xl transition-transform duration-500 group-hover:scale-[1.02]"
-
+                className="w-full h-[320px] sm:h-[380px] object-cover rounded-xl transition-transform duration-500 group-hover:scale-[1.02]"
               />
               
               {/* Floating Badge */}

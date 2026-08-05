@@ -13,13 +13,13 @@ export default function OutcomesExperience({ config, onNavigate }: OutcomesExper
       metric: "100%",
       label: "Certified Early Caregivers & Teachers",
       description: "All nursery caregivers hold recognized early childhood development certifications with full first-aid training.",
-      basis: `${config.name} Registry & Child Welfare Dept.`
+      basis: "Graben Highlight Academy Registry & Child Welfare Dept."
     },
     {
       metric: "98%",
       label: "Early Literacy & Phonics Progression",
       description: "Top Class pupils achieve fluent letter recognition, sight reading, and basic counting skills before entering primary school.",
-      basis: `${config.name} Early Assessment Records.`
+      basis: "Graben Highlight Early Assessment Records."
     },
     {
       metric: "100%",
@@ -31,7 +31,7 @@ export default function OutcomesExperience({ config, onNavigate }: OutcomesExper
       metric: "100%",
       label: "Primary School Transition Readiness",
       description: "Top Class graduates smoothly transition into primary school with high social confidence and foundational skills.",
-      basis: "Primary School Admissions Feedback."
+      basis: "Primary School Admissions Feedback in Rubavu District."
     }
   ];
 
@@ -67,13 +67,13 @@ export default function OutcomesExperience({ config, onNavigate }: OutcomesExper
       name: "Divine Keza (Parent)",
       cohort: "Top Class Parent 2025",
       role: "Mother of Ethan (Age 5)",
-      quote: `${config.name} transformed my son's confidence! He reads storybooks with joy and looks forward to school every single morning.`
+      quote: "Graben Highlight Academy transformed my son's confidence! He reads storybooks with joy and looks forward to school every single morning."
     },
     {
       name: "Jean-Paul Habimana",
-      cohort: `${config.name} Graduate (2023)`,
+      cohort: "Graben Nursery Graduate (Class of 2023)",
       role: "Top Student in Primary 1",
-      quote: `I learned my ABCs, numbers, and how to paint at ${config.name}. Playing with building blocks on the lawn was my favorite part!`
+      quote: "I learned my ABCs, numbers, and how to paint at Graben Highlight. Playing with building blocks on the lawn was my favorite part!"
     },
     {
       name: "Marie-Claire Mukamana",
@@ -84,22 +84,21 @@ export default function OutcomesExperience({ config, onNavigate }: OutcomesExper
   ];
 
   return (
-    <div className="py-12 sm:py-20 bg-gray-50/50" id="outcomes-experience-section">
+    <div className="py-12 sm:py-20 bg-amber-50/40" id="outcomes-experience-section">
       <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-5 space-y-16">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3">
           <span 
-            className="text-xs font-extrabold tracking-widest uppercase inline-block px-3 py-1 rounded-full text-white shadow-sm"
-            style={{ backgroundColor: config.secondaryColor }}
+            className="text-xs font-black tracking-widest uppercase inline-block px-3 py-1 rounded-full bg-amber-200 text-[#ea580c]"
           >
             NURSERY MILESTONES & CHILD GROWTH
           </span>
           <h2 className="font-sans font-black text-3xl sm:text-4xl text-gray-900 tracking-tight">
-            {config.name} Developmental Milestones
+            Graben Highlight Academy Developmental Milestones
           </h2>
           <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
-            Measuring early childhood progress in phonics, creative expression, social confidence, and primary school readiness.
+            Measuring early childhood progress in phonics, creative expression, social confidence, and primary school readiness in Rubavu District.
           </p>
         </div>
 
@@ -131,14 +130,14 @@ export default function OutcomesExperience({ config, onNavigate }: OutcomesExper
           ))}
         </div>
 
-        {/* Development Pillars Breakdown */}
+        {/* Career Pathways Breakdown */}
         <div className="bg-white rounded-3xl p-6 sm:p-10 border border-gray-150 shadow-sm space-y-8">
           <div className="text-center max-w-2xl mx-auto space-y-2">
             <h3 className="font-sans font-extrabold text-2xl text-gray-900 tracking-tight">
               Developmental Focus & Pillars
             </h3>
             <p className="text-gray-500 text-xs sm:text-sm font-light">
-              Nurturing core learning areas at {config.name} across phonics, arts, social empathy, and play.
+              Nurturing core learning areas at Graben Highlight Academy across phonics, arts, social empathy, and play.
             </p>
           </div>
 
@@ -163,14 +162,14 @@ export default function OutcomesExperience({ config, onNavigate }: OutcomesExper
           </div>
         </div>
 
-        {/* Parent & Educator Community Voices */}
+        {/* Notable Alumni Voices */}
         <div className="space-y-6">
           <div className="text-center max-w-xl mx-auto">
             <h3 className="font-sans font-extrabold text-2xl text-gray-900 tracking-tight">
-              Community Voices & Testimonials
+              Alumni Success Voices
             </h3>
             <p className="text-gray-500 text-xs sm:text-sm font-light mt-1">
-              Reflections from parents, young scholars, and early childhood educators at {config.name}.
+              Testimonials from former G.S Gacuba II A scholars now thriving in industry and sports.
             </p>
           </div>
 
@@ -185,11 +184,8 @@ export default function OutcomesExperience({ config, onNavigate }: OutcomesExper
                     <h4 className="font-bold text-xs sm:text-sm text-gray-900">{alum.name}</h4>
                     <p className="text-gray-500 text-[10px] sm:text-xs">{alum.role}</p>
                   </div>
-                  <span 
-                    className="text-[10px] font-extrabold px-2.5 py-0.5 rounded text-white shadow-xs"
-                    style={{ backgroundColor: config.secondaryColor }}
-                  >
-                    {alum.cohort}
+                  <span className="text-[10px] font-extrabold px-2 py-0.5 rounded bg-amber-100 text-amber-900">
+                    {alum.cohort.split(" ")[2]}
                   </span>
                 </div>
               </div>

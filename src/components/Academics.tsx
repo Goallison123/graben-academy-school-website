@@ -23,68 +23,56 @@ export default function Academics({ config, onNavigate }: AcademicsProps) {
             NURTURING EARLY CHILDHOOD GROWTH
           </span>
           <h2 className="font-sans font-extrabold text-3xl sm:text-4xl text-gray-900 tracking-tight">
-            Nursery Programs & Early Learning
+            Nursery Programs & Early Childhood Curriculum
           </h2>
           <div className="h-1 w-16 bg-gray-200 mx-auto rounded-full" />
           <p className="text-gray-500 text-sm sm:text-base leading-relaxed">
-            {config.name} offers loving, play-based nursery programs designed to build social confidence, early literacy, creativity, and joy for your little ones.
+            Graben Highlight Academy offers structured, play-based nursery programs in Rubavu District designed to cultivate social confidence, emotional intelligence, and cognitive milestones.
           </p>
         </div>
 
         {/* Nursery Learning Philosophy Callout Banner */}
-        <div 
-          className="mb-12 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden border border-white/20"
-          style={{
-            background: `linear-gradient(135deg, ${config.primaryColor} 0%, ${config.secondaryColor} 100%)`
-          }}
-        >
-          <div 
-            className="absolute top-0 right-0 -mr-12 -mt-12 w-64 h-64 rounded-full blur-3xl pointer-events-none opacity-30"
-            style={{ backgroundColor: config.secondaryColor }}
-          />
+        <div className="mb-12 bg-gradient-to-r from-[#2c1308] via-[#5c2a18] to-[#1e0a04] rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden border border-[#ea580c]/30">
+          <div className="absolute top-0 right-0 -mr-12 -mt-12 w-64 h-64 bg-[#ea580c]/20 rounded-full blur-3xl pointer-events-none" />
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-8 space-y-4">
-              <div 
-                className="inline-flex items-center space-x-2 text-white px-3.5 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider shadow-sm"
-                style={{ backgroundColor: config.secondaryColor }}
-              >
+              <div className="inline-flex items-center space-x-2 bg-[#ea580c] text-white px-3.5 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider shadow-sm">
                 <LucideIcon name="Sparkles" size={13} />
-                <span>Play-Based Learning & Exploration</span>
+                <span>Nurturing Early Childhood Education</span>
               </div>
               <h3 className="font-sans font-extrabold text-2xl sm:text-3xl text-white tracking-tight leading-snug">
-                Early Childhood Curriculum
+                Graben Highlight Nursery Curriculum
               </h3>
-              <p className="text-white/90 text-xs sm:text-sm leading-relaxed font-light">
-                We create a safe, vibrant, and loving environment where toddlers learn through play, story time, music, and hands-on discovery. Our certified caregivers focus on holistic development—emotional, social, motor skills, and creative play—giving every child a happy start.
+              <p className="text-amber-100 text-xs sm:text-sm leading-relaxed font-light">
+                Graben Highlight Academy is dedicated to providing quality early childhood education. We create a safe, engaging, and supportive environment where children learn through play, creativity, and exploration. Our trained caregivers focus on holistic development—social, emotional, and cognitive—helping every child build a strong foundation for future learning and success.
               </p>
               <div className="pt-2 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
                 <div className="bg-white/10 backdrop-blur-md p-3 rounded-xl border border-white/10">
-                  <span className="font-bold block mb-0.5 text-white">Baby & Toddler Class</span>
-                  <span className="text-white/80 text-[11px]">Sensory play, songs, & gentle care</span>
+                  <span className="text-[#ea580c] font-bold block mb-0.5">Baby & Toddler Stream</span>
+                  <span className="text-amber-100 text-[11px]">Sensory play, songs, & gentle care</span>
                 </div>
                 <div className="bg-white/10 backdrop-blur-md p-3 rounded-xl border border-white/10">
-                  <span className="font-bold block mb-0.5 text-white">Middle & Top Class</span>
-                  <span className="text-white/80 text-[11px]">Phonics, numbers, & art projects</span>
+                  <span className="text-[#ea580c] font-bold block mb-0.5">Middle & Top Stream</span>
+                  <span className="text-amber-100 text-[11px]">Phonics, counting, & art projects</span>
                 </div>
                 <div className="bg-white/10 backdrop-blur-md p-3 rounded-xl border border-white/10">
-                  <span className="font-bold block mb-0.5 text-white">Loving Caregivers</span>
-                  <span className="text-white/80 text-[11px]">Certified early education staff</span>
+                  <span className="text-[#ea580c] font-bold block mb-0.5">Trained Caregivers</span>
+                  <span className="text-amber-100 text-[11px]">100% certified child welfare experts</span>
                 </div>
               </div>
             </div>
 
             <div className="lg:col-span-4 bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/15 space-y-3">
-              <div className="flex items-center space-x-2 font-bold text-xs uppercase tracking-wider text-white">
+              <div className="flex items-center space-x-2 text-[#ea580c] font-bold text-xs uppercase tracking-wider">
                 <LucideIcon name="ShieldCheck" size={16} />
-                <span>Safe & Nurturing Environment</span>
+                <span>Quality & Safety Guarantee</span>
               </div>
-              <p className="text-xs text-white/90 leading-relaxed font-light">
-                Our nursery facilities strictly enforce child safety, hygienic meals, active playtime, and individual attention for every child.
+              <p className="text-xs text-amber-100 leading-relaxed font-light">
+                Our nursery facilities in Rubavu District strictly enforce child safety, hygienic nutrition, and loving individual care for every pupil.
               </p>
               <button
                 onClick={() => onNavigate && onNavigate("contact")}
-                className="w-full py-2.5 rounded-xl text-white font-extrabold text-xs transition-all shadow-md cursor-pointer flex items-center justify-center space-x-1.5"
-                style={{ backgroundColor: config.secondaryColor }}
+                className="w-full py-2.5 rounded-xl bg-[#ea580c] hover:bg-[#c2410c] text-white font-extrabold text-xs transition-all shadow-md cursor-pointer flex items-center justify-center space-x-1.5"
               >
                 <span>Inquire for Nursery Admission</span>
                 <LucideIcon name="ArrowRight" size={13} />
@@ -107,15 +95,15 @@ export default function Academics({ config, onNavigate }: AcademicsProps) {
                 }}
               >
                 <div>
-                  {/* Floating icon */}
+                  {/* Floating category */}
                   <div 
                     className="w-10 h-10 rounded-xl flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform duration-300"
                     style={{ backgroundColor: config.primaryColor }}
                   >
-                    <LucideIcon name={program.icon || "Smile"} size={18} />
+                    <LucideIcon name={program.icon} size={18} />
                   </div>
 
-                  {/* Level / Class Badge */}
+                  {/* Combination Code Badge */}
                   <span 
                     className="inline-block px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wide mb-3"
                     style={{ 
@@ -123,7 +111,7 @@ export default function Academics({ config, onNavigate }: AcademicsProps) {
                       color: config.secondaryColor 
                     }}
                   >
-                    LEVEL: {program.code}
+                    COMBINATION: {program.code}
                   </span>
 
                   {/* Title */}
@@ -139,7 +127,7 @@ export default function Academics({ config, onNavigate }: AcademicsProps) {
 
                 {/* Bottom Trigger Link */}
                 <div className="flex items-center text-xs font-semibold" style={{ color: config.primaryColor }}>
-                  <span>{isSelected ? "Hide details" : "View Program Highlights"}</span>
+                  <span>{isSelected ? "Show less details" : "View Curriculum Focus"}</span>
                   <LucideIcon 
                     name={isSelected ? "ChevronRight" : "ArrowRight"} 
                     size={12} 
@@ -147,29 +135,29 @@ export default function Academics({ config, onNavigate }: AcademicsProps) {
                   />
                 </div>
 
-                {/* Expanded Details Overlay */}
+                {/* Expanded Details overlay drawer (in-card) */}
                 {isSelected && (
                   <div className="absolute inset-0 bg-white/95 rounded-2xl p-6 border border-gray-100 flex flex-col justify-between z-10 animate-fade-in">
                     <div>
                       <div className="flex justify-between items-center mb-4">
-                        <span className="text-xs font-bold uppercase text-gray-400">CLASS HIGHLIGHTS</span>
+                        <span className="text-xs font-bold uppercase text-gray-400">CURRICULUM BREAKDOWN</span>
                         <button onClick={(e) => { e.stopPropagation(); setSelectedProgram(null); }} className="text-gray-400 hover:text-gray-600">
                           <LucideIcon name="X" size={16} />
                         </button>
                       </div>
-                      <h4 className="font-bold text-gray-900 text-sm sm:text-base mb-3">{program.title} Focus</h4>
+                      <h4 className="font-bold text-gray-900 text-sm sm:text-base mb-3">{program.code} Track Focus</h4>
                       <ul className="space-y-2.5">
                         <li className="flex items-start text-xs text-gray-600">
                           <span className="text-emerald-500 mr-2 font-bold">✓</span>
-                          <span>Interactive storytelling & phonics practice</span>
+                          <span>National examination syllabus integration</span>
                         </li>
                         <li className="flex items-start text-xs text-gray-600">
                           <span className="text-emerald-500 mr-2 font-bold">✓</span>
-                          <span>Creative art, motor skill activities & music</span>
+                          <span>Practical weekly laboratory work & tests</span>
                         </li>
                         <li className="flex items-start text-xs text-gray-600">
                           <span className="text-emerald-500 mr-2 font-bold">✓</span>
-                          <span>Guided social play & emotional development</span>
+                          <span>Dedicated career guidance mentoring panels</span>
                         </li>
                       </ul>
                     </div>
@@ -186,7 +174,7 @@ export default function Academics({ config, onNavigate }: AcademicsProps) {
                       className="w-full text-center py-2 rounded-lg text-xs font-bold text-white tracking-wide cursor-pointer"
                       style={{ backgroundColor: config.primaryColor }}
                     >
-                      Enquire for Enrollment
+                      Enquire for Admission
                     </button>
                   </div>
                 )}

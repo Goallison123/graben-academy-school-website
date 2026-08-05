@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <circle cx="100" cy="100" r="96" fill="#5c2a18" stroke="#ea580c" stroke-width="6"/>
+  <circle cx="100" cy="100" r="78" fill="#ffffff" stroke="#5c2a18" stroke-width="2"/>
+  <path id="textPathTop" d="M 22,100 A 78,78 0 1,1 178,100" fill="none"/>
+  <text fill="#ffffff" font-family="sans-serif" font-size="10" font-weight="bold" letter-spacing="1.2">
+    <textPath href="#textPathTop" startOffset="50%" text-anchor="middle">GROUPE SCOLAIRE GACUBA II A</textPath>
+  </text>
+  <g transform="translate(100,105)">
+    <!-- Open Book -->
+    <path d="M-32,12 C-16,5 -5,10 0,16 C5,10 16,5 32,12 L30,22 C16,15 5,18 0,23 C-5,18 -16,15 -30,22 Z" fill="#5c2a18"/>
+    <!-- Basketball & Atom symbol for Sports & Science (MPC/HGL) -->
+    <circle cx="0" cy="-18" r="16" fill="#ea580c"/>
+    <path d="M-16,-18 L16,-18 M0,-34 L0,-2" stroke="#ffffff" stroke-width="2"/>
+    <path d="M-11,-29 C-2,-18 -2,-18 -11,-7 M11,-29 C2,-18 2,-18 11,-7" fill="none" stroke="#ffffff" stroke-width="2"/>
+    <!-- GS Banner -->
+    <rect x="-42" y="26" width="84" height="18" rx="9" fill="#5c2a18"/>
+    <text x="0" y="39" fill="#ffffff" font-family="sans-serif" font-size="9" font-weight="900" text-anchor="middle">GS GACUBA II A</text>
+  </g>
+</svg>

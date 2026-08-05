@@ -14,29 +14,30 @@ import NewsAnnouncements from "./components/NewsAnnouncements";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import LucideIcon from "./components/LucideIcon";
+import PeithoGame from "./components/PeithoGame";
 
 // Custom Subpage Banner Component
 function SubpageHeader({ title, subtitle, config }: { title: string; subtitle: string; config: any }) {
   return (
     <div 
-      className="relative py-12 sm:py-16 text-white overflow-hidden bg-gradient-to-br from-orange-600 via-emerald-700 to-amber-600 border-b border-white/20"
+      className="relative py-12 sm:py-16 text-white overflow-hidden bg-gradient-to-br from-slate-950 via-[#0b2545] to-slate-900 border-b border-white/10"
       id="subpage-header"
     >
       {/* Delicate background ambient highlights */}
-      <div className="absolute -right-16 -bottom-16 w-64 h-64 rounded-full bg-amber-300/20 blur-3xl pointer-events-none" />
-      <div className="absolute -left-16 -top-16 w-64 h-64 rounded-full bg-emerald-400/20 blur-3xl pointer-events-none" />
+      <div className="absolute -right-16 -bottom-16 w-64 h-64 rounded-full bg-amber-400/5 blur-3xl pointer-events-none" />
+      <div className="absolute -left-16 -top-16 w-64 h-64 rounded-full bg-sky-500/5 blur-3xl pointer-events-none" />
       
       <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-5 relative z-10">
-        <nav className="flex items-center space-x-2 text-[10px] uppercase tracking-widest text-amber-100 font-bold mb-3">
-          <span className="opacity-80">School Portal</span>
+        <nav className="flex items-center space-x-2 text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-3">
+          <span className="opacity-70">School Portal</span>
           <span>/</span>
-          <span className="text-amber-300">{title}</span>
+          <span style={{ color: config.secondaryColor }}>{title}</span>
         </nav>
         
-        <h1 className="font-sans font-extrabold text-3xl sm:text-4xl text-white tracking-tight drop-shadow-sm">
+        <h1 className="font-sans font-extrabold text-3xl sm:text-4xl text-white tracking-tight">
           {title}
         </h1>
-        <p className="text-amber-100 text-xs sm:text-sm mt-2 max-w-3xl leading-relaxed font-light drop-shadow-sm">
+        <p className="text-slate-300 text-xs sm:text-sm mt-2 max-w-3xl leading-relaxed font-light">
           {subtitle}
         </p>
       </div>
@@ -45,9 +46,10 @@ function SubpageHeader({ title, subtitle, config }: { title: string; subtitle: s
 }
 
 export default function App() {
-  // Config for the school (Collège de Gisenyi Inyemeramihigo in Bleu Nuit)
+  // Config for the school
   const activeConfig = SCHOOLS_DATA[0];
   const [activeSection, setActiveSection] = useState<string>("home");
+  const [isGameOpen, setIsGameOpen] = useState<boolean>(false);
 
   // Reset scroll back to the top whenever active page route changes
   useEffect(() => {
@@ -59,7 +61,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white overflow-x-hidden font-sans selection:bg-amber-100 selection:text-amber-900">
+    <div className="min-h-screen flex flex-col bg-white overflow-x-hidden font-sans selection:bg-amber-100 selection:text-amber-900 relative">
       
       {/* 1. Header & Branding Grid */}
       <Topbar config={activeConfig} />
@@ -68,7 +70,23 @@ export default function App() {
         config={activeConfig} 
         onNavigate={handleNavigate} 
         activeSection={activeSection} 
+        onOpenGame={() => setIsGameOpen(true)}
       />
+
+      {/* Floating Always-Accessible Play Peítho Game FAB */}
+      <div className="fixed bottom-6 right-6 z-40">
+        <button
+          onClick={() => setIsGameOpen(true)}
+          className="bg-gradient-to-r from-amber-400 via-orange-500 to-amber-500 hover:from-amber-300 hover:to-orange-400 text-slate-950 font-black px-4 py-3 rounded-2xl shadow-2xl border-2 border-white flex items-center space-x-2 transition-all hover:scale-105 active:scale-95 cursor-pointer animate-bounce"
+        >
+          <LucideIcon name="Gamepad2" size={20} className="text-slate-950" />
+          <div className="text-left leading-tight hidden sm:block">
+            <div className="text-[10px] uppercase font-extrabold opacity-80">PWA Interactive Game</div>
+            <div className="text-xs">Play Peítho Canvas</div>
+          </div>
+          <span className="sm:hidden text-xs">Peítho Game</span>
+        </button>
+      </div>
 
       {/* 2. Page Router Controller */}
       <main className="flex-1">
@@ -120,9 +138,9 @@ export default function App() {
                 </div>
 
                 {/* Academics Teaser Card */}
-                <div className="bg-gradient-to-br from-[#ecfdf5] to-[#d1fae5] rounded-2xl p-6 border border-emerald-200 flex flex-col justify-between hover:shadow-lg transition-all group">
+                <div className="bg-gradient-to-br from-sky-50 to-blue-50 rounded-2xl p-6 border border-sky-200/80 flex flex-col justify-between hover:shadow-lg transition-all group">
                   <div className="space-y-3">
-                    <div className="w-12 h-12 rounded-2xl bg-[#059669] text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                    <div className="w-12 h-12 rounded-2xl bg-[#0284c7] text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
                       <LucideIcon name="Sparkles" size={22} />
                     </div>
                     <h3 className="font-extrabold text-gray-900 text-lg">Nursery Streams & Curriculum</h3>
@@ -132,7 +150,7 @@ export default function App() {
                   </div>
                   <button 
                     onClick={() => handleNavigate("academics")}
-                    className="mt-5 text-xs font-extrabold flex items-center space-x-1.5 cursor-pointer text-[#059669] group-hover:translate-x-1 transition-transform"
+                    className="mt-5 text-xs font-extrabold flex items-center space-x-1.5 cursor-pointer text-[#0284c7] group-hover:translate-x-1 transition-transform"
                   >
                     <span>Explore Learning Programs</span>
                     <LucideIcon name="ArrowRight" size={14} />
@@ -160,9 +178,9 @@ export default function App() {
                 </div>
 
                 {/* Campus Life Teaser Card */}
-                <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-6 border border-amber-200 flex flex-col justify-between hover:shadow-lg transition-all group">
+                <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border border-purple-200/80 flex flex-col justify-between hover:shadow-lg transition-all group">
                   <div className="space-y-3">
-                    <div className="w-12 h-12 rounded-2xl bg-[#d97706] text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                    <div className="w-12 h-12 rounded-2xl bg-purple-600 text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
                       <LucideIcon name="Home" size={22} />
                     </div>
                     <h3 className="font-extrabold text-gray-900 text-lg">Campus & Care Facilities</h3>
@@ -172,7 +190,7 @@ export default function App() {
                   </div>
                   <button 
                     onClick={() => handleNavigate("campus")}
-                    className="mt-5 text-xs font-extrabold flex items-center space-x-1.5 cursor-pointer text-[#d97706] group-hover:translate-x-1 transition-transform"
+                    className="mt-5 text-xs font-extrabold flex items-center space-x-1.5 cursor-pointer text-purple-600 group-hover:translate-x-1 transition-transform"
                   >
                     <span>Explore Campus Facilities</span>
                     <LucideIcon name="ArrowRight" size={14} />
@@ -180,7 +198,7 @@ export default function App() {
                 </div>
 
                 {/* Outcomes Teaser Card */}
-                <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 border border-amber-300/80 flex flex-col justify-between hover:shadow-lg transition-all group">
+                <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-6 border border-amber-300/80 flex flex-col justify-between hover:shadow-lg transition-all group">
                   <div className="space-y-3">
                     <div className="w-12 h-12 rounded-2xl bg-[#f59e0b] text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
                       <LucideIcon name="Smile" size={22} />
@@ -220,9 +238,9 @@ export default function App() {
                 </div>
 
                 {/* News Teaser Card */}
-                <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-6 border border-emerald-200 flex flex-col justify-between hover:shadow-lg transition-all group">
+                <div className="bg-gradient-to-br from-cyan-50 to-sky-50 rounded-2xl p-6 border border-cyan-200 flex flex-col justify-between hover:shadow-lg transition-all group">
                   <div className="space-y-3">
-                    <div className="w-12 h-12 rounded-2xl bg-[#059669] text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                    <div className="w-12 h-12 rounded-2xl bg-cyan-600 text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
                       <LucideIcon name="Newspaper" size={22} />
                     </div>
                     <h3 className="font-extrabold text-gray-900 text-lg">Nursery News & Bulletins</h3>
@@ -232,7 +250,7 @@ export default function App() {
                   </div>
                   <button 
                     onClick={() => handleNavigate("news")}
-                    className="mt-5 text-xs font-extrabold flex items-center space-x-1.5 cursor-pointer text-[#059669] group-hover:translate-x-1 transition-transform"
+                    className="mt-5 text-xs font-extrabold flex items-center space-x-1.5 cursor-pointer text-cyan-600 group-hover:translate-x-1 transition-transform"
                   >
                     <span>Read School Bulletins</span>
                     <LucideIcon name="ArrowRight" size={14} />
@@ -240,19 +258,19 @@ export default function App() {
                 </div>
 
                 {/* Contact Teaser Card */}
-                <div className="bg-gradient-to-br from-orange-500 via-emerald-600 to-amber-500 text-white rounded-2xl p-6 flex flex-col justify-between shadow-lg hover:scale-[1.02] transition-all group">
+                <div className="bg-gradient-to-br from-orange-500 to-amber-500 text-white rounded-2xl p-6 flex flex-col justify-between shadow-lg hover:scale-[1.02] transition-all group">
                   <div className="space-y-3">
                     <div className="w-12 h-12 rounded-2xl bg-white text-[#ea580c] flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
                       <LucideIcon name="ClipboardList" size={22} />
                     </div>
                     <h3 className="font-extrabold text-white text-lg">Nursery Enrollment Desk</h3>
-                    <p className="text-amber-100 text-xs font-light leading-relaxed">
+                    <p className="text-orange-100 text-xs font-light leading-relaxed">
                       Enroll your child for Baby, Middle, or Top Class. Schedule a campus visit or contact our friendly team!
                     </p>
                   </div>
                   <button 
                     onClick={() => handleNavigate("contact")}
-                    className="mt-5 text-xs font-black bg-white text-[#ea580c] px-4 py-2.5 rounded-xl shadow-md flex items-center justify-center space-x-1.5 cursor-pointer hover:bg-amber-50 transition-colors"
+                    className="mt-5 text-xs font-black bg-white text-[#ea580c] px-4 py-2.5 rounded-xl shadow-md flex items-center justify-center space-x-1.5 cursor-pointer hover:bg-orange-50 transition-colors"
                   >
                     <span>Start Enrollment Form</span>
                     <LucideIcon name="ArrowRight" size={14} />
@@ -265,14 +283,14 @@ export default function App() {
             {/* Quick action enrollment callout */}
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
               <div 
-                className="rounded-3xl p-8 sm:p-12 text-white text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-6 shadow-xl relative overflow-hidden bg-gradient-to-r from-orange-600 via-emerald-600 to-amber-500"
+                className="rounded-3xl p-8 sm:p-12 text-white text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-6 shadow-xl relative overflow-hidden bg-gradient-to-r from-[#ea580c] via-[#f59e0b] to-[#ea580c]"
               >
                 <div className="space-y-2">
                   <div className="inline-flex items-center space-x-1.5 bg-white/20 backdrop-blur-md text-white text-xs px-3 py-1 rounded-full font-black uppercase tracking-wider">
                     <span>🌟 Baby, Middle & Top Class Open</span>
                   </div>
                   <h3 className="font-black text-2xl sm:text-3xl tracking-tight">Enroll Your Child at Graben Highlight Academy</h3>
-                  <p className="text-amber-100 text-xs sm:text-sm font-light max-w-xl">
+                  <p className="text-orange-100 text-xs sm:text-sm font-light max-w-xl">
                     Applications are open for nursery admission in Rubavu District. Give your child the gift of joyful, play-based learning!
                   </p>
                 </div>
@@ -426,7 +444,14 @@ export default function App() {
       </main>
 
       {/* 3. Global footer */}
-      <Footer config={activeConfig} onNavigate={handleNavigate} />
+      <Footer config={activeConfig} onNavigate={handleNavigate} onOpenGame={() => setIsGameOpen(true)} />
+
+      {/* 4. Peítho Connection Canvas Game PWA Modal */}
+      <PeithoGame 
+        isOpen={isGameOpen} 
+        onClose={() => setIsGameOpen(false)} 
+        config={activeConfig} 
+      />
 
     </div>
   );
