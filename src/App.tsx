@@ -1,457 +1,288 @@
-import React, { useState, useEffect } from "react";
-import { SCHOOLS_DATA } from "./data/schools";
-import Topbar from "./components/Topbar";
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import Welcome from "./components/Welcome";
-import Stats from "./components/Stats";
-import Academics from "./components/Academics";
-import SportsAcademy from "./components/SportsAcademy";
-import CampusExperience from "./components/CampusExperience";
-import OutcomesExperience from "./components/OutcomesExperience";
-import Gallery from "./components/Gallery";
-import NewsAnnouncements from "./components/NewsAnnouncements";
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
-import LucideIcon from "./components/LucideIcon";
-import PeithoGame from "./components/PeithoGame";
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
-// Custom Subpage Banner Component
-function SubpageHeader({ title, subtitle, config }: { title: string; subtitle: string; config: any }) {
-  return (
-    <div 
-      className="relative py-12 sm:py-16 text-white overflow-hidden bg-gradient-to-br from-slate-950 via-[#0b2545] to-slate-900 border-b border-white/10"
-      id="subpage-header"
-    >
-      {/* Delicate background ambient highlights */}
-      <div className="absolute -right-16 -bottom-16 w-64 h-64 rounded-full bg-amber-400/5 blur-3xl pointer-events-none" />
-      <div className="absolute -left-16 -top-16 w-64 h-64 rounded-full bg-sky-500/5 blur-3xl pointer-events-none" />
-      
-      <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-5 relative z-10">
-        <nav className="flex items-center space-x-2 text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-3">
-          <span className="opacity-70">School Portal</span>
-          <span>/</span>
-          <span style={{ color: config.secondaryColor }}>{title}</span>
-        </nav>
-        
-        <h1 className="font-sans font-extrabold text-3xl sm:text-4xl text-white tracking-tight">
-          {title}
-        </h1>
-        <p className="text-slate-300 text-xs sm:text-sm mt-2 max-w-3xl leading-relaxed font-light">
-          {subtitle}
-        </p>
-      </div>
-    </div>
-  );
-}
+import React, { useState, useEffect } from 'react';
+import { Navbar } from './components/Navbar';
+import { ChildGreetingModal } from './components/ChildGreetingModal';
+import { CanvasGame } from './components/CanvasGame';
+import { WorldWeaverGame } from './components/WorldWeaverGame';
+import { SoundSnatcherGame } from './components/SoundSnatcherGame';
+import { MirrorWorldGame } from './components/MirrorWorldGame';
+import { GamePackageSelector } from './components/GamePackageSelector';
+import { BigRevealOverlay } from './components/BigRevealOverlay';
+import { DigitalFridge } from './components/DigitalFridge';
+import { LivingSanctuary } from './components/LivingSanctuary';
+import { TeacherDashboard } from './components/TeacherDashboard';
+import { PWAInstallBanner } from './components/PWAInstallBanner';
+import { GrabenSchoolWebsite, SubPageType } from './components/GrabenSchoolWebsite';
+
+import {
+  getStoredChildName,
+  setStoredChildName,
+  getStoredPlayCount,
+  incrementPlayCount,
+  getStoredArtworks,
+  saveArtwork,
+  toggleParentLike,
+  getStoredCharms,
+  unlockCharm,
+  getStoredSchoolConfig,
+  saveSchoolConfig,
+  getStoredTeacherPings,
+  sendTeacherPing,
+  updateTeacherPingStatus,
+  isFirstVisit,
+} from './utils/storage';
+
+import { getAwardCharm } from './data/charmsData';
+import { soundEngine } from './utils/sound';
+import { ArtworkEntry, GamePackageId, LivingCharm, SchoolConfig, TeacherPing } from './types';
 
 export default function App() {
-  // Config for the school
-  const activeConfig = SCHOOLS_DATA[0];
-  const [activeSection, setActiveSection] = useState<string>("home");
-  const [isGameOpen, setIsGameOpen] = useState<boolean>(false);
+  // Application Data State
+  const [childName, setChildName] = useState<string>(() => getStoredChildName());
+  const [playCount, setPlayCount] = useState<number>(() => getStoredPlayCount());
+  const [artworks, setArtworks] = useState<ArtworkEntry[]>(() => getStoredArtworks());
+  const [unlockedCharms, setUnlockedCharms] = useState<LivingCharm[]>(() => getStoredCharms());
+  const [schoolConfig, setSchoolConfig] = useState<SchoolConfig>(() => getStoredSchoolConfig());
+  const [teacherPings, setTeacherPings] = useState<TeacherPing[]>(() => getStoredTeacherPings());
 
-  // Reset scroll back to the top whenever active page route changes
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "instant" });
-  }, [activeSection]);
+  // UI State
+  const [activeTab, setActiveTab] = useState<'website' | 'canvas' | 'sanctuary' | 'fridge' | 'teacher'>('website');
+  const [websiteSubPage, setWebsiteSubPage] = useState<SubPageType>('home');
+  const [selectedGame, setSelectedGame] = useState<GamePackageId>('seeds');
+  const [isGreetingOpen, setIsGreetingOpen] = useState<boolean>(() => isFirstVisit());
+  const [isPWAInfoOpen, setIsPWAInfoOpen] = useState<boolean>(false);
+  const [isMuted, setIsMuted] = useState<boolean>(() => soundEngine.getMuted());
 
-  const handleNavigate = (sectionId: string) => {
-    setActiveSection(sectionId);
+  // Win Ceremony Overlay State
+  const [activeWinSession, setActiveWinSession] = useState<{
+    artworkDataUrl: string;
+    seedsConnected: number;
+    creatureName: string;
+    seedHex: string;
+    melodyNotes: number[];
+    charmEarned: LivingCharm;
+    currentArtworkEntry: ArtworkEntry;
+  } | null>(null);
+
+  // Sync Audio Mute
+  const handleToggleMute = () => {
+    const muted = soundEngine.toggleMuted();
+    setIsMuted(muted);
+  };
+
+  // Save Child Name
+  const handleSaveChildName = (newName: string) => {
+    setStoredChildName(newName);
+    setChildName(newName);
+  };
+
+  // Save School Customization
+  const handleSaveSchoolConfig = (newConfig: SchoolConfig) => {
+    saveSchoolConfig(newConfig);
+    setSchoolConfig(newConfig);
+  };
+
+  // Handle Win Event from Canvas
+  const handleWinGame = (winData: {
+    dataUrl: string;
+    seedsConnected: number;
+    creatureName: string;
+    seedHex: string;
+    melodyNotes: number[];
+  }) => {
+    const newPlayCount = incrementPlayCount();
+    setPlayCount(newPlayCount);
+
+    const awardCharm = getAwardCharm(newPlayCount, childName);
+    const updatedCharms = unlockCharm(awardCharm);
+    setUnlockedCharms(updatedCharms);
+
+    const newArtwork: ArtworkEntry = {
+      id: `art-${Date.now()}`,
+      childName,
+      title: `${winData.creatureName} Creation`,
+      dataUrl: winData.dataUrl,
+      timestamp: new Date().toISOString(),
+      seedsConnected: winData.seedsConnected,
+      creatureName: winData.creatureName,
+      charmEarned: awardCharm,
+      seedHex: winData.seedHex,
+      melodyNotes: winData.melodyNotes,
+    };
+
+    setActiveWinSession({
+      artworkDataUrl: winData.dataUrl,
+      seedsConnected: winData.seedsConnected,
+      creatureName: winData.creatureName,
+      seedHex: winData.seedHex,
+      melodyNotes: winData.melodyNotes,
+      charmEarned: awardCharm,
+      currentArtworkEntry: newArtwork,
+    });
+  };
+
+  // Action: Save to Digital Fridge
+  const handleSaveToFridge = () => {
+    if (!activeWinSession) return;
+    const updated = saveArtwork(activeWinSession.currentArtworkEntry);
+    setArtworks(updated);
+  };
+
+  // Action: Send to Teacher
+  const handleSendToTeacher = () => {
+    if (!activeWinSession) return;
+    const ping: TeacherPing = {
+      id: activeWinSession.currentArtworkEntry.id,
+      childName,
+      artworkTitle: activeWinSession.currentArtworkEntry.title,
+      dataUrl: activeWinSession.artworkDataUrl,
+      timestamp: activeWinSession.currentArtworkEntry.timestamp,
+      creatureName: activeWinSession.creatureName,
+      status: 'pending',
+    };
+    const updatedPings = sendTeacherPing(ping);
+    setTeacherPings(updatedPings);
+
+    // Also auto-save to fridge
+    handleSaveToFridge();
+  };
+
+  // Action: Teacher Send Praise
+  const handleTeacherSendPraise = (pingId: string, praiseComment: string) => {
+    const updatedPings = updateTeacherPingStatus(pingId, praiseComment);
+    setTeacherPings(updatedPings);
+    setArtworks(getStoredArtworks()); // reload fridge artworks
+  };
+
+  // Action: Toggle Parent Like
+  const handleToggleLike = (artId: string) => {
+    const updated = toggleParentLike(artId);
+    setArtworks(updated);
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white overflow-x-hidden font-sans selection:bg-amber-100 selection:text-amber-900 relative">
+    <div className="min-h-screen bg-[#FFFBF0] text-orange-950 font-sans antialiased flex flex-col selection:bg-orange-400 selection:text-white">
       
-      {/* 1. Header & Branding Grid */}
-      <Topbar config={activeConfig} />
-      
-      <Navbar 
-        config={activeConfig} 
-        onNavigate={handleNavigate} 
-        activeSection={activeSection} 
-        onOpenGame={() => setIsGameOpen(true)}
+      {/* App Header & Navigation */}
+      <Navbar
+        schoolConfig={schoolConfig}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        websiteSubPage={websiteSubPage}
+        setWebsiteSubPage={setWebsiteSubPage}
+        childName={childName}
+        onChangeNameClick={() => setIsGreetingOpen(true)}
+        unseenFridgeCount={artworks.filter((a) => !a.parentLiked).length}
+        isMuted={isMuted}
+        onToggleMute={handleToggleMute}
+        onOpenPWAInfo={() => setIsPWAInfoOpen(true)}
       />
 
-      {/* Floating Always-Accessible Play Peítho Game FAB */}
-      <div className="fixed bottom-6 right-6 z-40">
-        <button
-          onClick={() => setIsGameOpen(true)}
-          className="bg-gradient-to-r from-amber-400 via-orange-500 to-amber-500 hover:from-amber-300 hover:to-orange-400 text-slate-950 font-black px-4 py-3 rounded-2xl shadow-2xl border-2 border-white flex items-center space-x-2 transition-all hover:scale-105 active:scale-95 cursor-pointer animate-bounce"
-        >
-          <LucideIcon name="Gamepad2" size={20} className="text-slate-950" />
-          <div className="text-left leading-tight hidden sm:block">
-            <div className="text-[10px] uppercase font-extrabold opacity-80">PWA Interactive Game</div>
-            <div className="text-xs">Play Peítho Canvas</div>
-          </div>
-          <span className="sm:hidden text-xs">Peítho Game</span>
-        </button>
-      </div>
-
-      {/* 2. Page Router Controller */}
+      {/* Main Tab Content */}
       <main className="flex-1">
-        
-        {activeSection === "home" && (
-          <div className="animate-fade-in space-y-16 pb-16">
-            {/* Home Hero Slider */}
-            <Hero config={activeConfig} onCtaClick={handleNavigate} />
-            
-            {/* Core Quick Stats Bar */}
-            <Stats config={activeConfig} />
-
-            {/* Structured Page Navigation Bento-Grid Dashboard */}
-            <section className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-5 py-8" id="home-bento-portal">
-              <div className="text-center max-w-3xl mx-auto mb-10 space-y-2">
-                <span 
-                  className="text-xs font-extrabold tracking-widest uppercase inline-block px-3 py-1 rounded-full bg-amber-100 text-[#ea580c] shadow-xs"
-                >
-                  🎈 EXPLORE OUR NURSERY ACADEMY
-                </span>
-                <h2 className="font-sans font-black text-2xl sm:text-4xl text-gray-900 tracking-tight">
-                  Welcome to Graben Highlight Academy
-                </h2>
-                <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
-                  Click on any section below to explore our nursery classrooms, play areas, creative arts, child milestones, and admissions in Rubavu District.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                
-                {/* About Teaser Card */}
-                <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 border border-amber-200/80 flex flex-col justify-between hover:shadow-lg transition-all group">
-                  <div className="space-y-3">
-                    <div className="w-12 h-12 rounded-2xl bg-[#ea580c] text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
-                      <LucideIcon name="Heart" size={22} />
-                    </div>
-                    <h3 className="font-extrabold text-gray-900 text-lg">About Our Nursery</h3>
-                    <p className="text-gray-600 text-xs font-light leading-relaxed">
-                      Discover our safe, loving early childhood environment, play-based learning approach, and certified caregiver team.
-                    </p>
-                  </div>
-                  <button 
-                    onClick={() => handleNavigate("about")}
-                    className="mt-5 text-xs font-extrabold flex items-center space-x-1.5 cursor-pointer text-[#ea580c] group-hover:translate-x-1 transition-transform"
-                  >
-                    <span>Read Directress Welcome</span>
-                    <LucideIcon name="ArrowRight" size={14} />
-                  </button>
-                </div>
-
-                {/* Academics Teaser Card */}
-                <div className="bg-gradient-to-br from-sky-50 to-blue-50 rounded-2xl p-6 border border-sky-200/80 flex flex-col justify-between hover:shadow-lg transition-all group">
-                  <div className="space-y-3">
-                    <div className="w-12 h-12 rounded-2xl bg-[#0284c7] text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
-                      <LucideIcon name="Sparkles" size={22} />
-                    </div>
-                    <h3 className="font-extrabold text-gray-900 text-lg">Nursery Streams & Curriculum</h3>
-                    <p className="text-gray-600 text-xs font-light leading-relaxed">
-                      Explore Baby Class, Middle Class, and Top Class programs focusing on early literacy, phonics, numbers, and social skills.
-                    </p>
-                  </div>
-                  <button 
-                    onClick={() => handleNavigate("academics")}
-                    className="mt-5 text-xs font-extrabold flex items-center space-x-1.5 cursor-pointer text-[#0284c7] group-hover:translate-x-1 transition-transform"
-                  >
-                    <span>Explore Learning Programs</span>
-                    <LucideIcon name="ArrowRight" size={14} />
-                  </button>
-                </div>
-
-                {/* Sports/Play Teaser Card */}
-                <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-6 border border-emerald-200/80 flex flex-col justify-between hover:shadow-lg transition-all group">
-                  <div className="space-y-3">
-                    <div className="w-12 h-12 rounded-2xl bg-[#10b981] text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
-                      <LucideIcon name="Trophy" size={22} />
-                    </div>
-                    <h3 className="font-extrabold text-gray-900 text-lg">Play & Outdoor Sports</h3>
-                    <p className="text-gray-600 text-xs font-light leading-relaxed">
-                      Discover our mini basketball hoops, soft lawn soccer, balance obstacle courses, and active physical play.
-                    </p>
-                  </div>
-                  <button 
-                    onClick={() => handleNavigate("sports-academy")}
-                    className="mt-5 text-xs font-extrabold flex items-center space-x-1.5 cursor-pointer text-[#10b981] group-hover:translate-x-1 transition-transform"
-                  >
-                    <span>View Playground & Sports</span>
-                    <LucideIcon name="ArrowRight" size={14} />
-                  </button>
-                </div>
-
-                {/* Campus Life Teaser Card */}
-                <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border border-purple-200/80 flex flex-col justify-between hover:shadow-lg transition-all group">
-                  <div className="space-y-3">
-                    <div className="w-12 h-12 rounded-2xl bg-purple-600 text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
-                      <LucideIcon name="Home" size={22} />
-                    </div>
-                    <h3 className="font-extrabold text-gray-900 text-lg">Campus & Care Facilities</h3>
-                    <p className="text-gray-600 text-xs font-light leading-relaxed">
-                      Tour our sunlit classrooms, storybook reading nooks, creative arts atelier, rest/nap zones, and health care.
-                    </p>
-                  </div>
-                  <button 
-                    onClick={() => handleNavigate("campus")}
-                    className="mt-5 text-xs font-extrabold flex items-center space-x-1.5 cursor-pointer text-purple-600 group-hover:translate-x-1 transition-transform"
-                  >
-                    <span>Explore Campus Facilities</span>
-                    <LucideIcon name="ArrowRight" size={14} />
-                  </button>
-                </div>
-
-                {/* Outcomes Teaser Card */}
-                <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-6 border border-amber-300/80 flex flex-col justify-between hover:shadow-lg transition-all group">
-                  <div className="space-y-3">
-                    <div className="w-12 h-12 rounded-2xl bg-[#f59e0b] text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
-                      <LucideIcon name="Smile" size={22} />
-                    </div>
-                    <h3 className="font-extrabold text-gray-900 text-lg">Child Growth & Milestones</h3>
-                    <p className="text-gray-600 text-xs font-light leading-relaxed">
-                      Track early developmental milestones in communication, emotional confidence, creativity, and primary readiness.
-                    </p>
-                  </div>
-                  <button 
-                    onClick={() => handleNavigate("outcomes")}
-                    className="mt-5 text-xs font-extrabold flex items-center space-x-1.5 cursor-pointer text-[#d97706] group-hover:translate-x-1 transition-transform"
-                  >
-                    <span>View Child Milestones</span>
-                    <LucideIcon name="ArrowRight" size={14} />
-                  </button>
-                </div>
-
-                {/* Gallery Teaser Card */}
-                <div className="bg-gradient-to-br from-[#fff7ed] to-[#ffedd5] rounded-2xl p-6 border border-orange-200 flex flex-col justify-between hover:shadow-lg transition-all group">
-                  <div className="space-y-3">
-                    <div className="w-12 h-12 rounded-2xl bg-[#ea580c] text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
-                      <LucideIcon name="Image" size={22} />
-                    </div>
-                    <h3 className="font-extrabold text-gray-900 text-lg">Nursery Picture Gallery</h3>
-                    <p className="text-gray-600 text-xs font-light leading-relaxed">
-                      Enjoy vibrant, joyful photos of toddlers playing, painting, singing, reading, and exploring on campus.
-                    </p>
-                  </div>
-                  <button 
-                    onClick={() => handleNavigate("gallery")}
-                    className="mt-5 text-xs font-extrabold flex items-center space-x-1.5 cursor-pointer text-[#ea580c] group-hover:translate-x-1 transition-transform"
-                  >
-                    <span>Browse Picture Gallery</span>
-                    <LucideIcon name="ArrowRight" size={14} />
-                  </button>
-                </div>
-
-                {/* News Teaser Card */}
-                <div className="bg-gradient-to-br from-cyan-50 to-sky-50 rounded-2xl p-6 border border-cyan-200 flex flex-col justify-between hover:shadow-lg transition-all group">
-                  <div className="space-y-3">
-                    <div className="w-12 h-12 rounded-2xl bg-cyan-600 text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
-                      <LucideIcon name="Newspaper" size={22} />
-                    </div>
-                    <h3 className="font-extrabold text-gray-900 text-lg">Nursery News & Bulletins</h3>
-                    <p className="text-gray-600 text-xs font-light leading-relaxed">
-                      Read about upcoming orientation days, parent workshops, playground updates, and school announcements.
-                    </p>
-                  </div>
-                  <button 
-                    onClick={() => handleNavigate("news")}
-                    className="mt-5 text-xs font-extrabold flex items-center space-x-1.5 cursor-pointer text-cyan-600 group-hover:translate-x-1 transition-transform"
-                  >
-                    <span>Read School Bulletins</span>
-                    <LucideIcon name="ArrowRight" size={14} />
-                  </button>
-                </div>
-
-                {/* Contact Teaser Card */}
-                <div className="bg-gradient-to-br from-orange-500 to-amber-500 text-white rounded-2xl p-6 flex flex-col justify-between shadow-lg hover:scale-[1.02] transition-all group">
-                  <div className="space-y-3">
-                    <div className="w-12 h-12 rounded-2xl bg-white text-[#ea580c] flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
-                      <LucideIcon name="ClipboardList" size={22} />
-                    </div>
-                    <h3 className="font-extrabold text-white text-lg">Nursery Enrollment Desk</h3>
-                    <p className="text-orange-100 text-xs font-light leading-relaxed">
-                      Enroll your child for Baby, Middle, or Top Class. Schedule a campus visit or contact our friendly team!
-                    </p>
-                  </div>
-                  <button 
-                    onClick={() => handleNavigate("contact")}
-                    className="mt-5 text-xs font-black bg-white text-[#ea580c] px-4 py-2.5 rounded-xl shadow-md flex items-center justify-center space-x-1.5 cursor-pointer hover:bg-orange-50 transition-colors"
-                  >
-                    <span>Start Enrollment Form</span>
-                    <LucideIcon name="ArrowRight" size={14} />
-                  </button>
-                </div>
-
-              </div>
-            </section>
-
-            {/* Quick action enrollment callout */}
-            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-              <div 
-                className="rounded-3xl p-8 sm:p-12 text-white text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-6 shadow-xl relative overflow-hidden bg-gradient-to-r from-[#ea580c] via-[#f59e0b] to-[#ea580c]"
-              >
-                <div className="space-y-2">
-                  <div className="inline-flex items-center space-x-1.5 bg-white/20 backdrop-blur-md text-white text-xs px-3 py-1 rounded-full font-black uppercase tracking-wider">
-                    <span>🌟 Baby, Middle & Top Class Open</span>
-                  </div>
-                  <h3 className="font-black text-2xl sm:text-3xl tracking-tight">Enroll Your Child at Graben Highlight Academy</h3>
-                  <p className="text-orange-100 text-xs sm:text-sm font-light max-w-xl">
-                    Applications are open for nursery admission in Rubavu District. Give your child the gift of joyful, play-based learning!
-                  </p>
-                </div>
-                <button 
-                  onClick={() => handleNavigate("contact")}
-                  className="bg-white text-[#ea580c] font-black text-sm px-8 py-4 rounded-2xl shadow-lg hover:bg-amber-50 hover:scale-[1.03] active:scale-95 transition-all cursor-pointer shrink-0 space-x-2 flex items-center"
-                >
-                  <span>Enroll My Child Today</span>
-                  <LucideIcon name="ArrowRight" size={16} />
-                </button>
-              </div>
-            </section>
-          </div>
+        {activeTab === 'website' && (
+          <GrabenSchoolWebsite
+            schoolConfig={schoolConfig}
+            currentSubPage={websiteSubPage}
+            onNavigateSubPage={setWebsiteSubPage}
+            onOpenCanvas={() => setActiveTab('canvas')}
+            onOpenSanctuary={() => setActiveTab('sanctuary')}
+            onOpenFridge={() => setActiveTab('fridge')}
+            onOpenTeacher={() => setActiveTab('teacher')}
+          />
         )}
 
-        {activeSection === "about" && (
-          <div className="animate-fade-in">
-            <SubpageHeader 
-              title="About Graben Highlight Academy" 
-              subtitle={`Founded in ${activeConfig.established}, Graben Highlight Academy is a premier nursery school in Rubavu District dedicated to play-based early childhood education.`}
-              config={activeConfig}
+        {activeTab === 'canvas' && (
+          <div className="flex flex-col min-h-[calc(100vh-4rem)]">
+            <GamePackageSelector
+              selectedGame={selectedGame}
+              onSelectGame={(gameId) => setSelectedGame(gameId)}
+              childName={childName}
             />
-            
-            {/* Core Stats Bar */}
-            <Stats config={activeConfig} isSubpage={true} />
-            
-            {/* Principal Welcome Msg & History */}
-            <Welcome config={activeConfig} />
 
-            {/* Deep History of Nursery Campus */}
-            <section className="py-16 bg-white border-t border-gray-150">
-              <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-5">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                  <div className="lg:col-span-6 space-y-6">
-                    <h3 className="font-sans font-extrabold text-2xl text-slate-900">Our Early Childhood Philosophy</h3>
-                    <p className="text-gray-600 text-xs sm:text-sm leading-relaxed font-light">
-                      At Graben Highlight Academy, we believe that early childhood is the most crucial foundation for a lifetime of learning and joy. Our nursery environment in Rubavu District balances structured play, sensory exploration, phonics, numbers, creative arts, and gentle physical outdoor games.
-                    </p>
-                    <p className="text-gray-600 text-xs sm:text-sm leading-relaxed font-light">
-                      Our certified caregivers nurture every child with individual care, fostering social confidence, emotional security, and curiosity.
-                    </p>
-                  </div>
-                  <div className="lg:col-span-6 bg-amber-50/60 p-6 rounded-3xl border border-amber-200">
-                    <h4 className="font-bold text-slate-950 text-sm sm:text-base mb-4">Our Core Pillars of Excellence</h4>
-                    <div className="space-y-4">
-                      {[
-                        { title: "Play-Based Learning", desc: "Interactive phonics, building blocks, story nooks, and art ateliers." },
-                        { title: "Safe & Nurturing Care", desc: "100% certified early childhood caregivers and secure campus environment." },
-                        { title: "Holistic Development", desc: "Balanced social, emotional, cognitive, and motor-skills growth." }
-                      ].map((item, idx) => (
-                        <div key={idx} className="flex space-x-3.5">
-                          <div className="w-7 h-7 rounded-full bg-[#ea580c] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
-                            {idx + 1}
-                          </div>
-                          <div>
-                            <h5 className="font-bold text-xs sm:text-sm text-slate-950">{item.title}</h5>
-                            <p className="text-gray-600 text-[11px] sm:text-xs mt-0.5">{item.desc}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
+            {selectedGame === 'seeds' && (
+              <CanvasGame childName={childName} onWinGame={handleWinGame} />
+            )}
+
+            {selectedGame === 'weaver' && (
+              <WorldWeaverGame
+                childName={childName}
+                schoolConfig={schoolConfig}
+                onWinGame={handleWinGame}
+              />
+            )}
+
+            {selectedGame === 'sound' && (
+              <SoundSnatcherGame
+                childName={childName}
+                schoolConfig={schoolConfig}
+                onWinGame={handleWinGame}
+              />
+            )}
+
+            {selectedGame === 'mirror' && (
+              <MirrorWorldGame
+                childName={childName}
+                schoolConfig={schoolConfig}
+                onWinGame={handleWinGame}
+              />
+            )}
           </div>
         )}
 
-        {activeSection === "academics" && (
-          <div className="animate-fade-in">
-            <SubpageHeader 
-              title="Nursery Programs & Early Childhood Curriculum" 
-              subtitle="Discover Baby Class, Middle Class, and Top Class programs designed for joyful, play-based learning and primary school readiness."
-              config={activeConfig}
-            />
-            {/* Academic Program combinations */}
-            <Academics config={activeConfig} onNavigate={handleNavigate} />
-          </div>
+        {activeTab === 'sanctuary' && (
+          <LivingSanctuary
+            unlockedCharms={unlockedCharms}
+            childName={childName}
+            playCount={playCount}
+            onPlayCanvasClick={() => setActiveTab('canvas')}
+          />
         )}
 
-        {activeSection === "sports-academy" && (
-          <div className="animate-fade-in">
-            <SubpageHeader 
-              title="Graben Highlight Outdoor Play & Sports" 
-              subtitle="Developing toddler motor coordination, health, agility, and team play on our soft green lawn and mini sports equipment."
-              config={activeConfig}
-            />
-            {/* Talent & Sports Projects focus segment */}
-            <SportsAcademy config={activeConfig} onNavigate={handleNavigate} />
-          </div>
+        {activeTab === 'fridge' && (
+          <DigitalFridge
+            artworks={artworks}
+            childName={childName}
+            schoolConfig={schoolConfig}
+            onToggleLike={handleToggleLike}
+          />
         )}
 
-        {activeSection === "campus" && (
-          <div className="animate-fade-in">
-            <SubpageHeader 
-              title="Nursery Campus & Care Facilities" 
-              subtitle="Tour our sunlit classrooms, storybook reading corner, creative art atelier, green play lawn, and health care unit in Rubavu District."
-              config={activeConfig}
-            />
-            <CampusExperience config={activeConfig} onNavigate={handleNavigate} />
-          </div>
+        {activeTab === 'teacher' && (
+          <TeacherDashboard
+            teacherPings={teacherPings}
+            schoolConfig={schoolConfig}
+            onSendPraise={handleTeacherSendPraise}
+          />
         )}
-
-        {activeSection === "outcomes" && (
-          <div className="animate-fade-in">
-            <SubpageHeader 
-              title="Early Childhood Milestones & Readiness" 
-              subtitle="Tracking toddler growth across early literacy, phonics, numbers, emotional confidence, and primary school readiness."
-              config={activeConfig}
-            />
-            <OutcomesExperience config={activeConfig} onNavigate={handleNavigate} />
-          </div>
-        )}
-
-        {activeSection === "gallery" && (
-          <div className="animate-fade-in">
-            <SubpageHeader 
-              title="Nursery Picture Gallery" 
-              subtitle="A joyful visual showcase of children learning, painting, playing outdoor games, and exploring at Graben Highlight Academy."
-              config={activeConfig}
-            />
-            {/* Media & Image Lightroom Hub */}
-            <Gallery config={activeConfig} />
-          </div>
-        )}
-
-        {activeSection === "news" && (
-          <div className="animate-fade-in">
-            <SubpageHeader 
-              title="Nursery News & Announcements" 
-              subtitle="Stay updated with orientation announcements, parent workshop dates, campus upgrades, and nursery events."
-              config={activeConfig}
-            />
-            {/* Announcement Press Releases */}
-            <NewsAnnouncements config={activeConfig} />
-          </div>
-        )}
-
-        {activeSection === "contact" && (
-          <div className="animate-fade-in">
-            <SubpageHeader 
-              title="Nursery Enrollment & Contact Desk" 
-              subtitle="Inquire about Baby, Middle, or Top Class registration, fees, and campus tours at Graben Highlight Academy in Rubavu District."
-              config={activeConfig}
-            />
-            {/* Admissions Form & Location map */}
-            <Contact config={activeConfig} />
-          </div>
-        )}
-
       </main>
 
-      {/* 3. Global footer */}
-      <Footer config={activeConfig} onNavigate={handleNavigate} onOpenGame={() => setIsGameOpen(true)} />
-
-      {/* 4. Peítho Connection Canvas Game PWA Modal */}
-      <PeithoGame 
-        isOpen={isGameOpen} 
-        onClose={() => setIsGameOpen(false)} 
-        config={activeConfig} 
+      {/* Modals & Overlays */}
+      <ChildGreetingModal
+        isOpen={isGreetingOpen}
+        onClose={() => setIsGreetingOpen(false)}
+        schoolConfig={schoolConfig}
+        currentName={childName}
+        onSaveName={handleSaveChildName}
       />
+
+      {activeWinSession && (
+        <BigRevealOverlay
+          isOpen={Boolean(activeWinSession)}
+          artworkDataUrl={activeWinSession.artworkDataUrl}
+          childName={childName}
+          creatureName={activeWinSession.creatureName}
+          charmEarned={activeWinSession.charmEarned}
+          schoolConfig={schoolConfig}
+          onSendToTeacher={handleSendToTeacher}
+          onSaveToFridge={handleSaveToFridge}
+          onPlayAgain={() => setActiveWinSession(null)}
+        />
+      )}
 
     </div>
   );
